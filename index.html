@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Davi Santos · Desenvolvedor Front-end</title>
+    <meta
+      name="description"
+      content="Davi Santos, desenvolvedor front-end e web designer em São Paulo. Interfaces feitas com cuidado, do Webflow ao código."
+    />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Davi Santos · Desenvolvedor Front-end" />
+    <meta
+      property="og:description"
+      content="Desenvolvedor front-end e web designer em São Paulo."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <!-- Film grain over the whole page. -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="nav" id="nav">
+      <div class="nav__inner">
+        <a class="nav__brand" href="#top">Davi Santos</a>
+        <nav class="nav__links" aria-label="Seções">
+          <a href="#sobre">Sobre</a>
+          <a href="#stack">Stack</a>
+          <a href="#contato">Contato</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" id="hero">
+        <!-- Night scene behind the hero. The glows are there from the start;
+             only the three sweeping cones (.lights) fade in shortly after load. -->
+        <div class="scene" aria-hidden="true">
+          <span class="glow glow--amber"></span>
+          <span class="glow glow--cool"></span>
+          <div class="lights">
+            <span class="beam beam--1"></span>
+            <span class="beam beam--2"></span>
+            <span class="beam beam--3"></span>
+          </div>
+        </div>
+        <div class="hero__inner">
+          <p
+            class="kicker reveal lit"
+            data-text="Front-end &amp; Web Design · São Paulo, BR"
+          >
+            Front-end &amp; Web Design · São Paulo, BR
+          </p>
+          <h1 class="hero__name reveal lit" data-text="Davi Santos">
+            Davi Santos
+          </h1>
+          <p
+            class="hero__tagline reveal lit"
+            data-text="Desenvolvedor Front-end &amp; Web Designer"
+          >
+            Desenvolvedor Front-end &amp; Web Designer
+          </p>
+        </div>
+      </section>
+
+      <!-- Lower panel: the second (steel) background. It overlaps the foot of the
+         hero so its top edge (the divider) covers where the light cones start. -->
+      <div class="lower">
+        <div class="divider" aria-hidden="true"></div>
+
+        <section class="section" id="sobre" aria-labelledby="sobre-title">
+          <div class="section__head reveal">
+            <h2 class="section__title" id="sobre-title">Um pouco sobre mim</h2>
+          </div>
+          <div class="prose reveal">
+            <p>
+              Sou um desenvolvedor em início de carreira, aprendendo algo novo a
+              cada dia e tentando retribuir um pouco com o que sei. Atualmente
+              curso Análise e Desenvolvimento de Sistemas na USCS e atuo como
+              freelancer para algumas empresas durante a semana.
+            </p>
+
+            <p>
+              Já trabalhei em projetos internacionais antes, tanto no âmbito
+              acadêmico quanto profissional. Tenho uma certa facilidade com
+              temas como Design e UI/UX, isso porque venho treinando aspectos
+              como edição e criação de páginas web desde os 11 anos.
+            </p>
+
+            <p>
+              Se quiser saber o que estou aprendendo no momento, recomendo dar
+              uma olhada no meu <a href="#">meu blog</a>.
+            </p>
+          </div>
+        </section>
+
+        <section class="section" id="stack" aria-labelledby="stack-title">
+          <div class="section__head reveal">
+            <h2 class="section__title" id="stack-title">Com o que trabalho</h2>
+          </div>
+
+          <dl class="stack">
+            <div class="stack__group reveal">
+              <dt class="stack__label">Front-end &amp; interface</dt>
+              <dd class="stack__items">
+                <span>HTML &amp; CSS</span>
+                <span>JavaScript</span>
+                <span>Webflow</span>
+                <span>React <em>aprendendo</em></span>
+              </dd>
+            </div>
+            <div class="stack__group reveal">
+              <dt class="stack__label">Mobile &amp; back-end</dt>
+              <dd class="stack__items">
+                <span>Flutter</span>
+                <span>Firebase</span>
+                <span>SQL</span>
+                <span>REST API</span>
+                <span>Go <em>aprendendo</em></span>
+              </dd>
+            </div>
+            <div class="stack__group reveal">
+              <dt class="stack__label">Ferramentas</dt>
+              <dd class="stack__items">
+                <span>Git</span>
+                <span>Figma</span>
+                <span>Affinity</span>
+              </dd>
+            </div>
+          </dl>
+        </section>
+
+        <section
+          class="section section--contato"
+          id="contato"
+          aria-labelledby="contato-title"
+        >
+          <div class="section__head reveal">
+            <h2 class="section__title" id="contato-title">Vamos conversar</h2>
+          </div>
+          <p class="contato__note reveal">
+            Aberto a oportunidades, freelance e feedbacks no geral.
+          </p>
+          <ul class="contato__links reveal">
+            <li>
+              <a
+                target="_blank"
+                href="https://github.com/guararai"
+                aria-label="GitHub de Davi Santos"
+              >
+                <span class="contato__name">GitHub</span>
+                <span class="contato__addr">/guararai</span>
+                <span class="contato__arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li>
+              <a
+                target="_blank"
+                href="https://www.linkedin.com/in/davi-dos-santos-678055328/"
+                aria-label="LinkedIn de Davi Santos"
+              >
+                <span class="contato__name">LinkedIn</span>
+                <span class="contato__addr">/in/davi-dos-santos</span>
+                <span class="contato__arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="mailto:davi.guararai@gmail.com"
+                aria-label="Enviar email para Davi Santos"
+              >
+                <span class="contato__name">Email</span>
+                <span class="contato__addr">/davi.guararai@gmail.com</span>
+                <span class="contato__arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <footer class="foot reveal">
+      <span class="foot__year"><span id="year">2026</span></span>
+    </footer>
+
+    <script src="main.js" defer></script>
+  </body>
+</html>

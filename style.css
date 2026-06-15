@@ -1,0 +1,742 @@
+/* ============================================================
+   Davi Santos · portfólio
+   Madrugada voltando pra casa: asfalto, poste, farol, vidro úmido.
+   ============================================================ */
+
+:root {
+  --bg: oklch(0.16 0.014 250);
+  --bg-deep: oklch(0.115 0.012 250);
+  --bg-2: oklch(0.195 0.015 250); /* second background below the divider: dark steel blue-gray */
+
+  --ink: oklch(0.94 0.018 85);
+  --muted: oklch(0.74 0.022 75);
+  --faint: oklch(0.62 0.025 65);
+
+  --amber: oklch(0.80 0.12 72);
+
+  --line: oklch(0.95 0.02 80 / 0.10);
+  --tint: oklch(0.80 0.12 72 / 0.05);
+
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --maxw: 1100px;
+
+  --z-content: 2;
+  --z-grain: 40;
+  --z-nav: 50;
+}
+
+/* ---------- reset / base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg-deep);
+}
+
+body {
+  position: relative;
+  min-height: 100svh;
+  overflow-x: hidden;
+  font-family: var(--serif);
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--bg-2);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+main,
+.foot {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* ---------- custom scrollbar: warm amber ---------- */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.66 0.11 70) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.66 0.11 70);
+  border-radius: 999px;
+  border: 3px solid var(--bg-deep); /* insets the thumb so it reads thin */
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.8 0.12 72);
+}
+
+/* ---------- hero night scene: warm glows + soft sweeping light cones ---------- */
+/* Scoped to the hero (the first of the two backgrounds). Opaque gradient base,
+   warm corner glows, and soft conic light cones that only `transform`. No blur,
+   no JS, nothing per-frame — the earlier lag is gone. */
+.scene {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw; /* break out of the max-width hero to full-bleed */
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  isolation: isolate;
+  contain: layout paint style;
+  background:
+    linear-gradient(90deg, var(--bg-deep) 0%, transparent 12%, transparent 88%, var(--bg-deep) 100%),
+    radial-gradient(135% 78% at 50% -8%, oklch(0.215 0.022 258 / 0.9), transparent 60%),
+    linear-gradient(180deg, oklch(0.185 0.016 252) 0%, var(--bg) 55%, var(--bg-deep) 100%);
+}
+
+/* Only the three sweeping cones fade in shortly after load (the dark gradient
+   and the glows are there from the start), so the cones "come on" gently. */
+.lights {
+  position: absolute;
+  inset: 0;
+}
+.js .lights {
+  opacity: 0;
+  animation: lights-in 2s ease-in-out 0.5s forwards;
+}
+@keyframes lights-in {
+  to { opacity: 1; }
+}
+
+.glow {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.glow--amber {
+  width: 72vmax;
+  height: 72vmax;
+  top: -30vmax;
+  right: -22vmax;
+  background: radial-gradient(circle, oklch(0.78 0.12 70 / 0.22), transparent 60%);
+}
+
+.glow--cool {
+  width: 58vmax;
+  height: 58vmax;
+  bottom: -28vmax;
+  left: -22vmax;
+  background: radial-gradient(circle, oklch(0.55 0.05 250 / 0.2), transparent 62%);
+}
+
+/* The original GTA-V-style soft blurred light cones sweeping up from the foot of
+   the hero. PERF: the blurred wedge lives on a STATIC `::before` (rasterized once
+   and cached by the GPU); only the `.beam` wrapper rotates (main.js) + pulses
+   opacity. So the expensive blur is never recomputed per frame. */
+.beam {
+  position: absolute;
+  bottom: 0; /* apex pinned to the foot of the hero, regardless of hero height */
+  height: 165vh;
+  transform-origin: 50% 100%;
+  transform: rotate(-3deg); /* no-JS fallback; main.js drives the live angle */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.beam::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(43% 100%, 57% 100%, 100% 0, 0 0);
+  filter: blur(18px);
+}
+
+.beam--1 {
+  left: 24%;
+  width: 40vmax;
+  transform: rotate(-1deg); /* matches main.js's t=0 angle, so no flash on load */
+  animation: pulse 7s ease-in-out infinite backwards;
+}
+.beam--1::before {
+  background: linear-gradient(to top, oklch(0.8 0.12 72 / 0.34), oklch(0.8 0.12 72 / 0.1) 40%, transparent 76%);
+}
+
+.beam--2 {
+  left: 62%;
+  width: 44vmax;
+  transform: rotate(12deg);
+  animation: pulse 9s ease-in-out infinite 1.5s backwards;
+}
+.beam--2::before {
+  background: linear-gradient(to top, oklch(0.7 0.16 45 / 0.3), oklch(0.7 0.16 45 / 0.09) 42%, transparent 78%);
+}
+
+.beam--3 {
+  left: 46%;
+  width: 26vmax;
+  transform: rotate(-14deg);
+  animation: pulse 6s ease-in-out infinite 0.7s backwards;
+}
+.beam--3::before {
+  background: linear-gradient(to top, oklch(0.93 0.04 88 / 0.22), transparent 66%);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 0.78; }
+}
+
+/* ---------- lower panel: the second (steel) background ---------- */
+/* Opaque, pulled up over the foot of the hero so its top edge covers where the
+   light cones originate. The divider sits on that edge. */
+.lower {
+  position: relative;
+  z-index: 2;
+  margin-top: -5.5vh;
+  background: var(--bg-2);
+}
+
+/* ---------- divider: a single warm line between the two backgrounds ---------- */
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.82 0.1 72 / 0.55) 18%,
+    oklch(0.82 0.1 72 / 0.55) 82%,
+    transparent
+  );
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.08;
+  contain: layout paint style;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---------- nav ---------- */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-nav);
+  border-bottom: 1px solid transparent;
+}
+
+/* Transition only after the first paint (added by main.js), so the initial
+   scrolled/unscrolled state applies instantly — no flash on reload. */
+.nav.is-ready {
+  transition: background 0.5s var(--ease), backdrop-filter 0.5s var(--ease),
+    border-color 0.5s var(--ease);
+}
+
+.nav.is-scrolled {
+  background: oklch(0.16 0.014 250 / 0.62);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom-color: var(--line);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(1rem, 2.2vw, 1.5rem) clamp(1.25rem, 5vw, 3rem);
+}
+
+.nav__brand {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.nav__links {
+  display: flex;
+  gap: clamp(1.1rem, 3vw, 2.25rem);
+}
+
+.nav__links a {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--faint);
+  text-decoration: none;
+  transition: color 0.3s var(--ease);
+}
+
+.nav__links a:hover,
+.nav__links a:focus-visible {
+  color: var(--amber);
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7rem clamp(1.25rem, 5vw, 3rem) 6rem;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1; /* text sits above the light cones */
+  max-width: 60rem;
+}
+
+.kicker {
+  font-family: var(--mono);
+  font-size: clamp(0.72rem, 1.5vw, 0.82rem);
+  letter-spacing: 0.04em;
+  color: var(--amber);
+}
+
+.hero__name {
+  position: relative;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(3rem, 11vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin-top: 1.1rem;
+  color: var(--ink);
+}
+
+/* Any `.lit` hero text warms to the light's colour exactly where a cone crosses
+   it. A warm clone (`content: attr(data-text)`) is revealed only inside a soft
+   band whose width = the cone's width at THAT element's height; main.js sets
+   --w/--mx per beam per element. The base text stays solid, so this is light,
+   not gradient-text. */
+.lit {
+  position: relative;
+}
+
+.lit::before,
+.lit::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  letter-spacing: inherit;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* rust band = beam 2 */
+.lit::before {
+  color: oklch(0.82 0.15 50);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+  -webkit-mask-size: var(--w2, 0px) 100%;
+  mask-size: var(--w2, 0px) 100%;
+  -webkit-mask-position: var(--mx2, -9999px) 0;
+  mask-position: var(--mx2, -9999px) 0;
+}
+
+/* amber bands = beams 1 and 3 */
+.lit::after {
+  color: oklch(0.9 0.12 80);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent),
+    linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+  mask-image:
+    linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent),
+    linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+  -webkit-mask-size: var(--w1, 0px) 100%, var(--w3, 0px) 100%;
+  mask-size: var(--w1, 0px) 100%, var(--w3, 0px) 100%;
+  -webkit-mask-position: var(--mx1, -9999px) 0, var(--mx3, -9999px) 0;
+  mask-position: var(--mx1, -9999px) 0, var(--mx3, -9999px) 0;
+}
+
+/* The tint fades in on the same clock as the cones, so the text warms up as the
+   light comes on rather than before it. */
+.js .lit::before,
+.js .lit::after {
+  opacity: 0;
+  animation: lights-in 3s ease-in-out 1.8s forwards;
+}
+
+.hero__tagline {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.1rem, 3vw, 1.65rem);
+  color: var(--muted);
+  margin-top: 1.4rem;
+}
+
+/* ---------- sections ---------- */
+
+.section {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(3rem, 7vh, 5.5rem) clamp(1.25rem, 5vw, 3rem);
+}
+
+.section__head {
+  margin-bottom: clamp(2.5rem, 5.5vw, 4.25rem);
+}
+
+.section__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  max-width: 18ch;
+}
+
+/* ---------- sobre ---------- */
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  max-width: 62ch;
+}
+
+.prose p {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.75;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--line);
+  transition: color 0.3s var(--ease), text-decoration-color 0.3s var(--ease);
+}
+
+.prose a:hover,
+.prose a:focus-visible {
+  color: var(--amber);
+  text-decoration-color: var(--amber);
+}
+
+/* Author's reminder to write this section later, intentionally unfinished. */
+.prose__placeholder {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  padding: 1.5rem 1.8rem;
+  border: 1px dashed oklch(0.95 0.02 80 / 0.2);
+  border-radius: 4px;
+}
+
+/* ---------- stack ---------- */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  max-width: 920px;
+}
+
+.stack__group {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 1.5rem 2.5rem;
+  padding: clamp(1.9rem, 4.4vw, 2.9rem) 0;
+  border-top: 1px solid var(--line);
+}
+
+.stack__group:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.stack__label {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--faint);
+  padding-top: 0.55rem;
+}
+
+.stack__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.8rem;
+}
+
+.stack__items span {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  color: var(--muted);
+  transition: color 0.35s var(--ease);
+  cursor: default;
+}
+
+.stack__items span:hover {
+  color: var(--amber);
+}
+
+.stack__items em {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 0.55em;
+  color: var(--faint);
+  letter-spacing: 0.02em;
+  vertical-align: 0.25em;
+  margin-left: 0.35em;
+}
+
+/* ---------- contato ---------- */
+
+.contato__note {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 36ch;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  text-wrap: pretty;
+}
+
+.contato__links {
+  list-style: none;
+  max-width: 720px;
+}
+
+.contato__links li {
+  border-top: 1px solid var(--line);
+  transition: background 0.4s var(--ease);
+}
+
+.contato__links li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.contato__links li:has(a:hover),
+.contato__links li:has(a:focus-visible) {
+  background: var(--tint);
+}
+
+.contato__links a {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.9rem, 3vw, 2rem);
+  padding: clamp(1.35rem, 3.2vw, 1.85rem) 0.8rem;
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 0.4s var(--ease);
+}
+
+.contato__links a:hover,
+.contato__links a:focus-visible {
+  transform: translateX(0.6rem);
+}
+
+.contato__name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  transition: color 0.35s var(--ease);
+}
+
+.contato__addr {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--faint);
+  transition: color 0.35s var(--ease);
+}
+
+.contato__arrow {
+  margin-left: auto;
+  margin-right: 0.75rem; /* inset from the right edge, gives the arrow room */
+  align-self: center;
+  font-size: 1.15rem;
+  color: var(--faint);
+  transition: transform 0.4s var(--ease), color 0.35s var(--ease);
+}
+
+.contato__links a:hover .contato__name,
+.contato__links a:focus-visible .contato__name {
+  color: var(--amber);
+}
+
+.contato__links a:hover .contato__addr,
+.contato__links a:focus-visible .contato__addr {
+  color: var(--muted);
+}
+
+.contato__links a:hover .contato__arrow,
+.contato__links a:focus-visible .contato__arrow {
+  transform: translate(3px, -3px);
+  color: var(--amber);
+}
+
+/* ---------- footer ---------- */
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 3rem 1.5rem 4rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--faint);
+}
+
+.foot__year {
+  margin-top: 0.35rem;
+  text-align: center;
+}
+
+/* ---------- reveal motion (enhances an already-visible default) ---------- */
+
+/* Focus-in entrance: text emerges out of a soft blur (a "focus pull", per
+   impeccable's motion materials) — on theme with the fogged-glass / distance
+   feel, more distinctive than a plain fade-up. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(12px);
+}
+
+.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  transition: opacity 0.85s var(--ease), transform 1.05s var(--ease),
+    filter 1.05s var(--ease);
+}
+
+.js .hero__inner .reveal:nth-child(1) { transition-delay: 0.05s; }
+.js .hero__inner .reveal:nth-child(2) { transition-delay: 0.18s; }
+.js .hero__inner .reveal:nth-child(3) { transition-delay: 0.31s; }
+.js .hero__inner .reveal:nth-child(4) { transition-delay: 0.44s; }
+
+/* stagger contact rows under their revealed list */
+.js .contato__links li {
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(9px);
+}
+
+.js .contato__links.is-in li {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  transition: opacity 0.8s var(--ease), transform 0.95s var(--ease),
+    filter 0.95s var(--ease);
+}
+
+.js .contato__links.is-in li:nth-child(1) { transition-delay: 0.06s; }
+.js .contato__links.is-in li:nth-child(2) { transition-delay: 0.16s; }
+.js .contato__links.is-in li:nth-child(3) { transition-delay: 0.26s; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 640px) {
+  .nav__inner {
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+    justify-content: flex-end;
+  }
+  /* Hero already carries the name; drop the nav brand so the links never clip. */
+  .nav__brand {
+    display: none;
+  }
+  .nav__links {
+    gap: 1.25rem;
+  }
+  .nav__links a {
+    font-size: 0.78rem;
+  }
+  .stack__group {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+  .stack__label {
+    padding-top: 0;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js .reveal,
+  .js .reveal.is-in,
+  .js .contato__links li,
+  .js .contato__links.is-in li {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  .beam {
+    animation: none !important;
+  }
+  /* Hold the cones in a composed crossing pose instead of sweeping. */
+  .beam--1 { transform: rotate(-7deg); opacity: 0.6; }
+  .beam--2 { transform: rotate(8deg); opacity: 0.55; }
+  .beam--3 { transform: rotate(-2deg); opacity: 0.5; }
+  /* Lights are simply present (no fade-in), and there's no light-tracking; the
+     solid base text stands on its own. */
+  .lights {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .lit::before,
+  .lit::after {
+    opacity: 0 !important;
+    animation: none !important;
+  }
+}
