@@ -9,14 +9,20 @@
       content="Davi Santos, desenvolvedor front-end e web designer em São Paulo. Interfaces feitas com cuidado, do Webflow ao código."
     />
     <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#14161c" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.guararai.com/" />
     <meta property="og:title" content="Davi Santos · Desenvolvedor Front-end" />
     <meta
       property="og:description"
       content="Desenvolvedor front-end e web designer em São Paulo."
     />
+    <meta property="og:image" content="https://www.guararai.com/assets/img/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <link
       rel="preload"
@@ -39,14 +45,16 @@
     </script>
   </head>
   <body>
-    <!-- Film grain over the whole page. -->
+    <a class="skip" href="#top">Pular para o conteúdo</a>
     <div class="grain" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"></div>
 
     <header class="nav" id="nav">
       <div class="nav__inner">
         <a class="nav__brand" href="#top">Davi Santos</a>
         <nav class="nav__links" aria-label="Seções">
           <a href="#sobre">Sobre</a>
+          <a href="#projetos">Projetos</a>
           <a href="#stack">Stack</a>
           <a href="#contato">Contato</a>
         </nav>
@@ -54,9 +62,7 @@
     </header>
 
     <main id="top">
-      <section class="hero" id="hero">
-        <!-- Night scene behind the hero. The glows are there from the start;
-             only the three sweeping cones (.lights) fade in shortly after load. -->
+      <section class="hero" id="hero" aria-label="Apresentação">
         <div class="scene" aria-hidden="true">
           <span class="glow glow--amber"></span>
           <span class="glow glow--cool"></span>
@@ -67,58 +73,211 @@
           </div>
         </div>
         <div class="hero__inner">
-          <p
-            class="kicker reveal lit"
-            data-text="São Paulo, BR"
-          >
-            São Paulo, BR
-          </p>
-          <h1 class="hero__name reveal lit" data-text="Davi Santos">
-            Davi Santos
+          <h1 class="hero__name reveal reveal--words" aria-label="Davi Santos">
+            <span class="mask"><span class="hero__word lit">Davi</span></span>
+            <span class="mask"><span class="hero__word lit">Santos</span></span>
           </h1>
-          <p
-            class="hero__tagline reveal lit"
-            data-text="Desenvolvedor Front-end &amp; Web Designer"
-          >
-            Desenvolvedor Front-end &amp; Web Designer
-          </p>
+          <p class="hero__tagline reveal">Desenvolvedor Front-end &amp; Web Designer</p>
+          <div class="hero__credits">
+            <p class="kicker reveal">São Paulo, BR</p>
+            <p class="hero__hint reveal" aria-hidden="true">
+              rolar<span class="hero__drip"></span>
+            </p>
+          </div>
         </div>
       </section>
 
-      <!-- Lower panel: the second (steel) background. It overlaps the foot of the
-         hero so its top edge (the divider) covers where the light cones start. -->
+      <!-- Everything below slides over the sticky hero like a window coming up. -->
       <div class="lower">
         <div class="divider" aria-hidden="true"></div>
 
-        <section class="section" id="sobre" aria-labelledby="sobre-title">
-          <div class="section__head reveal">
-            <h2 class="section__title" id="sobre-title">Um pouco sobre mim</h2>
+        <section class="break break--janela" aria-label="Chuva no vidro">
+          <figure class="photo photo--bleed" data-parallax="0.7">
+            <picture>
+              <source
+                media="(max-width: 767px)"
+                sizes="100vw"
+                srcset="assets/img/janela-p-720.webp 720w, assets/img/janela-p-1080.webp 1080w"
+                width="1080"
+                height="1350"
+              />
+              <img
+                class="photo__img"
+                src="assets/img/janela-1200.webp"
+                srcset="assets/img/janela-800.webp 800w, assets/img/janela-1200.webp 1200w, assets/img/janela-1600.webp 1600w"
+                sizes="100vw"
+                width="1600"
+                height="1000"
+                alt="Gotas de chuva no vidro de um carro à noite, com luzes da cidade desfocadas ao fundo."
+                fetchpriority="high"
+                decoding="async"
+              />
+            </picture>
+            <figcaption class="photo__caption reveal">
+              Chuva no vidro, luz de sódio — Foto: C. G., Unsplash
+            </figcaption>
+          </figure>
+          <div class="break__inner">
+            <p class="break__quote">
+              <span class="reveal" data-split="lines">Interfaces feitas com cuidado, do Webflow ao código.</span>
+              <em class="reveal" data-split="lines">Quase sempre de noite, com a cidade passando pela janela.</em>
+            </p>
           </div>
-          <div class="prose reveal">
-            <p>
+        </section>
+
+        <section class="section section--sobre" id="sobre" aria-labelledby="sobre-title">
+          <div class="section__head">
+            <h2 class="section__title reveal" id="sobre-title" data-split="lines">Um pouco sobre mim</h2>
+          </div>
+          <div class="prose">
+            <p class="reveal">
               Sou um desenvolvedor em início de carreira, aprendendo algo novo a
               cada dia e tentando retribuir um pouco com o que sei. Atualmente
               curso Análise e Desenvolvimento de Sistemas na USCS e atuo como
               freelancer para algumas empresas durante a semana.
             </p>
-
-            <p>
+            <p class="reveal">
               Já trabalhei em projetos internacionais antes, tanto no âmbito
               acadêmico quanto profissional. Tenho uma certa facilidade com
               temas como Design e UI/UX, isso porque venho treinando aspectos
               como edição e criação de páginas web desde os 11 anos.
             </p>
+          </div>
+          <figure class="sobre__figure">
+            <div class="photo photo--inset" data-parallax="0.5">
+              <picture>
+                <source
+                  media="(max-width: 599px)"
+                  sizes="100vw"
+                  srcset="assets/img/sobre-p-720.webp 720w, assets/img/sobre-p-1080.webp 1080w"
+                  width="1080"
+                  height="1350"
+                />
+                <img
+                  class="photo__img"
+                  src="assets/img/sobre-1200.webp"
+                  srcset="assets/img/sobre-800.webp 800w, assets/img/sobre-1200.webp 1200w, assets/img/sobre-1600.webp 1600w"
+                  sizes="(min-width: 900px) 60vw, 100vw"
+                  width="1600"
+                  height="1067"
+                  alt="Vista do banco de trás de um carro à noite, com as luzes da cidade borradas pela chuva no vidro."
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <figcaption class="photo__caption reveal">
+              Banco de trás, madrugada — Foto: Manh Ngo, Unsplash
+            </figcaption>
+          </figure>
+        </section>
 
+        <section class="break break--rua" aria-label="Rua">
+          <figure class="photo photo--bleed" data-parallax="0.7">
+            <picture>
+              <img
+                class="photo__img"
+                src="assets/img/rua-1200.webp"
+                srcset="assets/img/rua-800.webp 800w, assets/img/rua-1200.webp 1200w, assets/img/rua-1600.webp 1600w"
+                sizes="100vw"
+                width="1600"
+                height="1000"
+                alt="Rua vazia à noite, asfalto molhado refletindo a luz laranja dos postes."
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            <figcaption class="photo__caption reveal">
+              Asfalto molhado — Foto: Photozzia, Unsplash
+            </figcaption>
+          </figure>
+        </section>
+
+        <section class="section section--projetos" id="projetos" aria-labelledby="projetos-title">
+          <h2 class="section__title section__title--overlap reveal" id="projetos-title" data-split="lines">
+            O que andei fazendo
+          </h2>
+          <p class="projetos__intro lead reveal">
+            Dois projetos do caminho até aqui, e um espaço pro próximo. Detalhes
+            e links em breve.
+          </p>
+
+          <div class="projetos__list">
+            <article class="projetos__item reveal reveal--rows">
+              <h3 class="projetos__name">Sync2Hire</h3>
+              <p class="projetos__desc">
+                Em breve escrevo aqui o que foi esse projeto e o que eu fiz nele.
+              </p>
+              <span class="projetos__status">em construção</span>
+            </article>
+            <article class="projetos__item reveal reveal--rows">
+              <h3 class="projetos__name">AgendaHub</h3>
+              <p class="projetos__desc">
+                Em breve escrevo aqui o que foi esse projeto e o que eu fiz nele.
+              </p>
+              <span class="projetos__status">em construção</span>
+            </article>
+            <article class="projetos__item reveal reveal--rows">
+              <h3 class="projetos__name">Ainda sem nome</h3>
+              <p class="projetos__desc">
+                Espaço reservado pro próximo projeto que eu terminar.
+              </p>
+              <span class="projetos__status">em breve</span>
+            </article>
+          </div>
+
+          <!-- One cover per project; on wide screens they stack in a sticky
+               frame and the active one wipes up over the previous. -->
+          <div class="projetos__covers" data-active="0">
+            <figure class="projetos__cover">
+              <div class="photo">
+                <img
+                  class="photo__img"
+                  src="assets/img/sync2hire-720.webp"
+                  srcset="assets/img/sync2hire-720.webp 720w, assets/img/sync2hire-1080.webp 1080w"
+                  sizes="(min-width: 900px) 42vw, 100vw"
+                  width="1080"
+                  height="1350"
+                  alt="Imagem provisória: prédios de São Paulo à noite com janelas acesas."
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption class="photo__caption">
+                Imagem provisória — Foto: R Spegel, Unsplash
+              </figcaption>
+            </figure>
+            <figure class="projetos__cover">
+              <div class="photo">
+                <img
+                  class="photo__img"
+                  src="assets/img/agendahub-720.webp"
+                  srcset="assets/img/agendahub-720.webp 720w, assets/img/agendahub-1080.webp 1080w"
+                  sizes="(min-width: 900px) 42vw, 100vw"
+                  width="1080"
+                  height="1350"
+                  alt="Imagem provisória: cruzamento vazio à noite, semáforos acesos na neblina."
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption class="photo__caption">
+                Imagem provisória — Foto: Ilia, Unsplash
+              </figcaption>
+            </figure>
+            <figure class="projetos__cover projetos__cover--vazio">
+              <figcaption class="photo__caption">ainda sem imagem</figcaption>
+            </figure>
           </div>
         </section>
 
-        <section class="section" id="stack" aria-labelledby="stack-title">
-          <div class="section__head reveal">
-            <h2 class="section__title" id="stack-title">Com o que trabalho</h2>
+        <section class="section section--stack" id="stack" aria-labelledby="stack-title">
+          <div class="section__head">
+            <h2 class="section__title reveal" id="stack-title" data-split="lines">Com o que trabalho</h2>
           </div>
 
           <dl class="stack">
-            <div class="stack__group reveal">
+            <div class="stack__group reveal reveal--rows">
               <dt class="stack__label">Front-end &amp; interface</dt>
               <dd class="stack__items">
                 <span>HTML &amp; CSS</span>
@@ -127,7 +286,7 @@
                 <span>React <em>aprendendo</em></span>
               </dd>
             </div>
-            <div class="stack__group reveal">
+            <div class="stack__group reveal reveal--rows">
               <dt class="stack__label">Mobile &amp; back-end</dt>
               <dd class="stack__items">
                 <span>Flutter</span>
@@ -137,7 +296,7 @@
                 <span>Go <em>aprendendo</em></span>
               </dd>
             </div>
-            <div class="stack__group reveal">
+            <div class="stack__group reveal reveal--rows">
               <dt class="stack__label">Ferramentas</dt>
               <dd class="stack__items">
                 <span>Git</span>
@@ -148,21 +307,23 @@
           </dl>
         </section>
 
-        <section
-          class="section section--contato"
-          id="contato"
-          aria-labelledby="contato-title"
-        >
-          <div class="section__head reveal">
-            <h2 class="section__title" id="contato-title">Vamos conversar</h2>
+        <section class="section section--contato" id="contato" aria-labelledby="contato-title">
+          <div class="scene scene--arrival" aria-hidden="true">
+            <span class="glow glow--arrival"></span>
           </div>
-          <p class="contato__note reveal">
+          <div class="section__head">
+            <h2 class="section__title section__title--display reveal" id="contato-title" data-split="lines">
+              Vamos conversar
+            </h2>
+          </div>
+          <p class="contato__note lead reveal">
             Aberto a oportunidades, freelance e feedbacks no geral.
           </p>
-          <ul class="contato__links reveal">
-            <li>
+          <ul class="contato__links">
+            <li class="reveal reveal--rows">
               <a
                 target="_blank"
+                rel="noopener"
                 href="https://github.com/guararai"
                 aria-label="GitHub de Davi Santos"
               >
@@ -171,9 +332,10 @@
                 <span class="contato__arrow" aria-hidden="true">↗</span>
               </a>
             </li>
-            <li>
+            <li class="reveal reveal--rows">
               <a
                 target="_blank"
+                rel="noopener"
                 href="https://www.linkedin.com/in/davi-dos-santos-678055328/"
                 aria-label="LinkedIn de Davi Santos"
               >
@@ -182,7 +344,7 @@
                 <span class="contato__arrow" aria-hidden="true">↗</span>
               </a>
             </li>
-            <li>
+            <li class="reveal reveal--rows">
               <a
                 href="mailto:davi.guararai@gmail.com"
                 aria-label="Enviar email para Davi Santos"
@@ -197,8 +359,19 @@
       </div>
     </main>
 
-    <footer class="foot reveal">
-      <span class="foot__year"><span id="year">2026</span></span>
+    <footer class="foot">
+      <div class="foot__marquee" data-marquee="40" aria-hidden="true">
+        <div class="foot__track">
+          <span class="foot__copy">Davi Santos — Desenvolvedor Front-end &amp; Web Designer — São Paulo, BR — </span>
+          <span class="foot__copy">Davi Santos — Desenvolvedor Front-end &amp; Web Designer — São Paulo, BR — </span>
+        </div>
+      </div>
+      <div class="foot__credits">
+        <span>© <span id="year">2026</span> Davi Santos</span>
+        <span>Fotos: Unsplash</span>
+        <span>HTML, CSS e JS escritos à mão</span>
+        <a class="foot__top" href="#top">voltar ao topo ↑</a>
+      </div>
     </footer>
 
     <script src="assets/js/vendor/lenis.min.js" defer></script>
