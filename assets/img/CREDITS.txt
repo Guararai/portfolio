@@ -1,0 +1,12 @@
+Fotos: Unsplash (https://unsplash.com/license)
+
+Arquivo(s)                 Foto (images.unsplash.com)              Fotografo(a)
+janela-*.webp, og.jpg      photo-1511634829096-045a111727eb        C. G.       https://unsplash.com/photos/JgDUVGAXsso
+sobre-*.webp               photo-1781930264697-ef1ab60041df        Manh Ngo
+rua-*.webp                 photo-1706875311168-bd3b08547236        Photozzia
+sync2hire-*.webp           photo-1598900863555-3b098bec6394        R Spegel
+agendahub-*.webp           photo-1667416448809-3c739ff26888        Ilia
+
+As variantes (largura x altura, WebP/JPEG) foram geradas pela CDN do Unsplash
+com fit=crop&crop=entropy; nenhuma edicao alem do recorte e da compressao.
+Cobertura de projetos e provisoria ate existirem screenshots reais.
