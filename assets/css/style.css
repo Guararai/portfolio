@@ -675,6 +675,17 @@ html {
   border: 1px solid var(--line);
 }
 
+.photo--inset .photo__img {
+  filter: saturate(0.72) contrast(1.04) brightness(1.18);
+}
+
+.photo--inset::after {
+  background:
+    radial-gradient(80% 60% at 85% 10%, var(--warm-reflection), transparent 60%),
+    linear-gradient(180deg, transparent 60%, var(--veil-deep)),
+    oklch(0.16 0.014 250 / 0.3);
+}
+
 .photo__caption {
   font-family: var(--mono);
   font-size: var(--text-xs);
@@ -923,10 +934,16 @@ html {
   display: contents;
 }
 
+.projetos__item,
+.projetos__cover {
+  grid-column: 1 / -1;
+}
+
 .projetos__cover {
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
+  isolation: isolate; /* keeps a cover's caption from painting through the cover above it */
   border: 1px solid var(--line);
   background: var(--bg-deep);
 }
@@ -1091,6 +1108,7 @@ html {
 
 .contato__addr {
   flex-basis: 100%;
+  order: 3; /* small screens: name + arrow share the first line, address wraps below */
   font-family: var(--mono);
   font-size: var(--text-sm);
   color: var(--faint);
@@ -1476,6 +1494,7 @@ html {
 
   .contato__addr {
     flex-basis: auto;
+    order: 0;
   }
 }
 

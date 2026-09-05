@@ -214,8 +214,13 @@
       });
       return;
     }
-    var top =
-      typeof target === "number" ? target : target.getBoundingClientRect().top + window.scrollY;
+    var top;
+    if (typeof target === "number") top = target;
+    else {
+      // match Lenis: element targets respect the document's scroll-padding-top
+      var pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+      top = target.getBoundingClientRect().top + window.scrollY - pad;
+    }
     window.scrollTo({ top: top + (opts.offset || 0), behavior: "auto" });
     if (done) done();
   }

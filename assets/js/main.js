@@ -96,12 +96,13 @@
     var target = document.getElementById(id);
     if (!target) return;
     e.preventDefault();
-    var offset = id === "top" ? 0 : -((nav ? nav.offsetHeight : 0) + 16);
+    // Lenis (like scrollIntoView) honours the html scroll-padding-top that
+    // keeps targets clear of the fixed nav, so no extra offset here.
     var done = function () {
       if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
       target.focus({ preventScroll: true });
     };
-    if (FX) FX.scrollTo(target, { offset: offset }, done);
+    if (FX) FX.scrollTo(target, {}, done);
     else {
       target.scrollIntoView();
       done();
@@ -257,7 +258,13 @@
       { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
     );
     reveals.forEach(function (el) {
-      io.observe(el);
+      // The hero is on screen at load and its credits sit inside the IO's
+      // bottom margin; reveal them outright instead of waiting on an
+      // intersection that never comes.
+      if (el.closest(".hero")) {
+        el.addEventListener("transitionend", clearFilter);
+        el.classList.add("is-in");
+      } else io.observe(el);
     });
   }
 
